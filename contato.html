@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contato WhatsApp - Clínica</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+</head>
+<body>
+    <style>
+  /* Estilo moderno para o botão WhatsApp */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f1f3f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 16px;
+  }
+
+  .whatsapp-contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    text-decoration: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+    font-weight: 600;
+    font-size: 1.2rem;
+    max-width: 320px;
+    width: 100%;
+    justify-content: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  .whatsapp-contact:hover,
+  .whatsapp-contact:focus-visible {
+    background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);
+    box-shadow: 0 12px 30px rgba(18, 140, 118, 0.6);
+    outline: none;
+  }
+
+  .material-icons.whatsapp-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
+  }
+
+  @media (max-width: 480px) {
+    .whatsapp-contact {
+      font-size: 1rem;
+      padding: 14px 20px;
+      max-width: 280px;
+    }
+    .material-icons.whatsapp-icon {
+      font-size: 24px;
+    }
+  }
+</style>
+  <a 
+    href="https://wa.me/5514991941675?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta%20na%20cl%C3%ADnica.%20Por%20favor%2C%20pode%20me%20ajudar%3F" 
+    class="whatsapp-contact" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    aria-label="Entrar em contato pelo WhatsApp para agendar consulta"
+  >
+    <span class="material-icons whatsapp-icon" aria-hidden="true">chat</span>
+    Marcar Consulta via WhatsApp
+  </a>
+</body>
+</html>

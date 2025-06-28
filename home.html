@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlowCare - Home</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <button id="toggle-btn">☰</button>
+  <div class="logo-small">
+  <img src="Logo-removebg-preview.png" alt="Logo FlowCare"/>
+</div>
+
+<nav class="side-nav">
+  <a href="#historia" class="tab-link active">História</a>
+  <a href="#servicos" class="tab-link">Serviços</a>
+  <a href="#conteudo" class="tab-link">Conteúdo</a>
+  <a href="contato.html" class="tab-link">Contato</a>
+</nav>
+
+</aside>
+
+<div class="main-content">
+  <header>
+    <h1>FlowCare</h1>
+  </header>
+
+  <main>
+    <!-- História -->
+    <section id="historia" class="tab-content active">
+      <div class="content-wrapper">
+        <div class="text-box">
+          <h2>História da FlowCare</h2>
+          <p>Este projeto visa a criação de uma plataforma digital inovadora destinada a transformar e otimizar as operações diárias das clínicas de Cafelândia, integrando soluções tecnológicas modernas com um rico conteúdo histórico que reverencia a evolução dos serviços de saúde ao longo do tempo.</p>
+        </div>
+        <div class="image-box">
+          <img src="clinica.jpg" alt="Imagem da clínica"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- Serviços -->
+    <section id="servicos" class="tab-content">
+      <ul class="service-list">
+      <section id="agendamento-online">
+    <div class="container">
+        <h2 class="section-title">Agendamento Online</h2>
+        <p class="section-description">Escolha o dia e o horário que melhor se adapta à sua rotina para marcar sua consulta.</p>
+
+        <div class="appointment-form">
+            <div class="form-group">
+                <label for="appointmentDate">Selecione o Dia:</label>
+                <input type="date" id="appointmentDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="appointmentTime">Horários Disponíveis:</label>
+                <select id="appointmentTime" class="form-control" disabled required>
+                    <option value="">Selecione um dia para ver os horários</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="patientName">Seu Nome Completo:</label>
+                <input type="text" id="patientName" class="form-control" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="patientEmail">Seu E-mail:</label>
+                <input type="email" id="patientEmail" class="form-control" placeholder="seu.email@exemplo.com" required>
+            </div>
+
+            <button type="submit" class="btn-primary" id="scheduleButton">Agendar Consulta</button>
+        </div>
+    </div>
+</section>
+      </ul>
+    </section>
+
+    <!-- Conteúdo Médico -->
+    <section id="conteudo" class="tab-content">
+      <h2>Informações Médicas e Notícias</h2>
+      <div class="news-grid">
+        <div class="news-card">
+          <h3>Surto de Dengue 2025</h3>
+          <p>O Brasil enfrenta um dos maiores surtos de dengue dos últimos anos. As autoridades de saúde alertam sobre a importância da eliminação dos focos do mosquito Aedes aegypti.</p>
+          <a href="https://www.gov.br/saude" target="_blank">Saiba mais</a>
+        </div>
+
+        <div class="news-card">
+          <h3>Nova Vacina contra Gripe Atualizada</h3>
+          <p>O Ministério da Saúde lançou uma versão atualizada da vacina contra a gripe, incluindo proteção contra novas variantes do vírus influenza.</p>
+          <a href="https://www.gov.br/saude" target="_blank">Veja detalhes</a>
+        </div>
+
+        <div class="news-card">
+          <h3>COVID-19: Casos em Queda</h3>
+          <p>Os casos de COVID-19 seguem em queda no Brasil, mas o uso de máscaras ainda é recomendado em ambientes hospitalares e transporte público.</p>
+          <a href="https://www.gov.br/saude" target="_blank">Leia mais</a>
+        </div>
+
+        <div class="news-card">
+          <h3>Alerta: Febre Maculosa</h3>
+          <p>Novos casos de febre maculosa foram registrados em regiões do Sudeste. A doença é transmitida pelo carrapato-estrela. Fique atento aos sintomas.</p>
+          <a href="https://www.gov.br/saude" target="_blank">Entenda os riscos</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 FlowCare. Todos os direitos reservados.</p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

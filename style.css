@@ -1,0 +1,722 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Cores principais */
+:root {
+  --primary-color: #8fe3a6;
+  --primary-dark: #64b87d;
+  --white: #ffffff;
+  --gray-light: #f5f5f5;
+  --gray-dark: #333;
+}
+
+/* Fonte */
+body {
+  font-family: 'Arial', sans-serif;
+  /* Mantenho o background do body como estava, se precisar de um background diferente SÓ para o login, teremos que usar uma classe específica no body do index.html */
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.85),
+      rgba(255, 255, 255, 0.85)
+    ),
+    url('fundo.jpg'); /* Certifique-se que 'fundo.jpg' está no caminho correto */
+  background-size: cover;
+  background-position: center;
+  color: var(--gray-dark);
+}
+
+/* ------------------------------------ */
+/* ESTILOS ESPECÍFICOS PARA A PÁGINA DE LOGIN (index.html) */
+/* ------------------------------------ */
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Se você quiser um background diferente do body para a tela de login, ajuste aqui */
+  /* background-color: var(--gray-light); */ /* Isso pode sobrescrever o background do body se você quiser um fundo sólido */
+}
+
+.login-box {
+  background-color: var(--white);
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 300px;
+  text-align: center; /* Adicionado para centralizar texto dentro da caixa de login */
+}
+
+.login-box h1 { /* Específico para o h1 dentro da caixa de login */
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  font-size: 2rem; /* Ajustado para um tamanho comum para títulos */
+}
+
+.login-box p { /* Para o texto "Faça login para acessar sua conta." */
+    margin-bottom: 15px;
+    color: var(--gray-dark);
+}
+
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left; /* Garante que label e input fiquem alinhados à esquerda dentro do grupo */
+  position: relative; /* Para posicionar o olho do password */
+}
+
+.input-group label {
+  display: block; /* Garante que o label ocupe sua própria linha */
+  margin-bottom: 5px;
+  color: var(--gray-dark);
+  font-weight: bold;
+}
+
+.input-group input {
+  width: calc(100% - 22px); /* Ajusta a largura considerando padding e border */
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* Garante que padding e border não aumentem a largura total */
+}
+
+.input-group .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%; /* Ajuste fino se necessário, depende da altura do input */
+    transform: translateY(20%); /* Para centralizar verticalmente com o input */
+    cursor: pointer;
+    color: var(--gray-dark);
+    font-size: 1.2rem;
+}
+
+
+.options-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.options-group .remember-me {
+  display: flex;
+  align-items: center;
+}
+
+.options-group .remember-me input[type="checkbox"] {
+  width: auto; /* Para checkbox não ocupar 100% */
+  margin-right: 5px;
+  margin-bottom: 0; /* Remove margin-bottom padrão */
+}
+
+.options-group .forgot-password {
+  color: var(--primary-dark);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.options-group .forgot-password:hover {
+  color: var(--primary-color);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-dark);
+  border: none;
+  border-radius: 5px;
+  color: var(--white);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Adicionado para separar do grupo de opções */
+}
+
+.btn-login:hover {
+  background-color: var(--primary-color);
+}
+
+.social-login {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.social-login p {
+  margin-bottom: 15px;
+  color: var(--gray-dark);
+}
+
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn-social {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: var(--white);
+  color: var(--gray-dark);
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  flex: 1; /* Para os botões ocuparem espaço igualmente */
+}
+
+.btn-social.google {
+  /* Pode adicionar um ícone ou cor específica do Google aqui */
+}
+
+.btn-social.facebook {
+  /* Pode adicionar um ícone ou cor específica do Facebook aqui */
+}
+
+.btn-social:hover {
+  background-color: var(--gray-light);
+  border-color: var(--primary-color);
+}
+
+.signup-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--gray-dark);
+}
+
+.signup-link a {
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.signup-link a:hover {
+  color: var(--primary-color);
+}
+
+/* ------------------------------------ */
+/* ESTILOS GERAIS DO SITE (MANTIDOS DE SEU CSS ORIGINAL) */
+/* ------------------------------------ */
+
+/* Header */
+header {
+  background-color: var(--primary-dark);
+  padding: 20px 30px;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  width: 120px;
+  height: auto;
+  margin-right: 10px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--primary-color);
+}
+
+/* Main Section */
+main {
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+/* Abas */
+.tab-link {
+  padding: 10px 20px;
+  background-color: var(--primary-dark);
+  color: var(--white);
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+}
+
+.tab-link.active {
+  background-color: var(--primary-color);
+}
+
+.tab-link:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Conteúdo das abas */
+.tab-content {
+  display: none;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.service-list {
+  list-style: none;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--gray-dark);
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 20px;
+  text-align: center;
+  position: fixed; /* Isso fará com que o footer fique sempre na parte inferior da tela */
+  bottom: 0;
+  width: 100%;
+}
+
+/* Estilo para o texto da história */
+.history-text {
+  font-family: 'Libre Baskerville', sans-serif; /* Altere 'Arial' para qualquer fonte que preferir */
+  font-size: 2.0rem;  /* Tamanho da fonte */
+  line-height: 2.1;   /* Distância entre linhas */
+  color: #333;        /* Cor do texto */
+  font-weight: normal; /* Peso da fonte */
+}
+
+
+/* NOVO LAYOUT DE CONTEÚDO */
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px;
+  flex-wrap: wrap;
+}
+
+.text-box {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 500px;
+  flex: 1;
+  text-align: left;
+}
+
+.image-box img {
+  width: 400px;
+  max-width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  flex: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-box img {
+    width: 90%;
+  }
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 100vh;
+  background-color: var(--primary-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+  gap: 40px;
+  z-index: 100;
+}
+
+.logo-small img {
+  width: 50px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+  color: var(--primary-color);
+}
+
+/* CONTEÚDO PRINCIPAL AJUSTADO */
+.main-content {
+  margin-left: 80px;
+}
+
+/* HEADER AJUSTADO */
+header {
+  background-color: var(--white);
+  padding: 10px 20px;
+  color: var(--primary-dark);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+/* CONTEÚDO DA HISTÓRIA AJUSTADO */
+.content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.text-box {
+  background-color: var(--white);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 500px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.image-box img {
+  width: 400px;
+  max-width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .sidebar {
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .side-nav {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .side-nav a {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+    margin-top: 80px;
+  }
+}
+
+/* Corrigido: Sidebar com textos normais (horizontal) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background-color: var(--primary-dark);
+  padding: 20px 10px;
+  transition: width 0.3s;
+  overflow: hidden;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar #toggle-btn {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 24px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.logo-small img {
+  width: 40px;
+  height: auto;
+  border-radius: 10px;
+  margin: 0 auto 20px;
+}
+
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+.side-nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background 0.3s;
+  white-space: nowrap; /* manter texto em uma linha */
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+  background-color: var(--primary-color);
+  color: var(--gray-dark);
+}
+
+/* Ao colapsar: só some o texto, mas sem virar ele */
+.sidebar.collapsed .side-nav a {
+  font-size: 0;
+  padding: 10px;
+}
+
+.sidebar.collapsed .side-nav a::before {
+  content: "•";
+  font-size: 20px;
+  color: var(--white);
+  display: inline-block;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: flex-end; /* Para deixar o texto e imagem no lado direito */
+  align-items: center;
+  gap: 30px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.text-box {
+  background-color: #8fe3a6;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 500px;
+  height: auto;
+  color: #1a1a1a;
+  font-family: 'Poppins', sans-serif;
+
+  font-size: 1.15rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+.image-box img {
+  max-height: 450px;
+  width: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Logo padrão */
+.logo-small img {
+  width: 150px;
+  height: auto;
+  border-radius: 10px;
+  margin: 0 auto 20px;
+  transition: width 0.3s ease;
+}
+
+/* Logo reduzida quando sidebar está colapsada */
+.sidebar.collapsed .logo-small img {
+  width: 25px; /* diminui a logo */
+}
+
+/* ===== NEWS CARDS ===== */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px;
+}
+
+.news-card {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.news-card h3 {
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+
+.news-card p {
+  color: var(--gray-dark);
+  margin-bottom: 15px;
+}
+
+.news-card a {
+  text-decoration: none;
+  color: var(--primary-dark);
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.news-card a:hover {
+  color: var(--primary-color);
+}
+/* ------------------------------------ */
+/* ESTILOS PARA A SEÇÃO DE AGENDAMENTO ONLINE (AJUSTE DE ESPAÇAMENTO) */
+/* ------------------------------------ */
+
+#agendamento-online {
+    padding: 50px 20px; /* Reduzido de 80px para 50px de padding superior/inferior */
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+#agendamento-online .section-title {
+    font-size: 2.8rem;
+    color: var(--primary-dark);
+    margin-bottom: 25px; /* Reduzido de 30px para 25px */
+}
+
+#agendamento-online .section-description {
+    font-size: 1.2rem;
+    color: var(--gray-dark);
+    margin-bottom: 35px; /* Reduzido de 50px para 35px */
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.appointment-form {
+    padding: 30px; /* Reduzido de 40px para 30px de padding interno */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.appointment-form .form-group {
+    margin-bottom: 20px; /* Reduzido de 30px para 20px */
+}
+
+.appointment-form label {
+    display: block;
+    margin-bottom: 8px; /* Reduzido de 10px para 8px */
+    font-weight: bold;
+    color: var(--gray-dark);
+    font-size: 1.15rem;
+}
+
+.appointment-form .form-control {
+    width: calc(100% - 24px);
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+}
+
+.appointment-form .form-control:focus {
+    outline: none;
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 3px rgba(143, 227, 166, 0.5);
+}
+
+.appointment-form .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--primary-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px; /* Reduzido de 20px para 15px */
+}
+
+.appointment-form .btn-primary:hover {
+    background-color: var(--primary-color);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #agendamento-online {
+        padding: 40px 15px; /* Ajuste para telas menores também */
+    }
+
+    #agendamento-online .section-title {
+        font-size: 2.4rem;
+    }
+
+    .appointment-form {
+        padding: 25px; /* Ajuste para telas menores também */
+        margin: 0 15px;
+    }
+}
