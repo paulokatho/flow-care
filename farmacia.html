@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowChat | Chat Farmacêutico Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="farmacia.css" />
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto max-w-4xl p-4">
+    <header class="bg-blue-600 text-white p-6 rounded-t-xl shadow-md">
+      <div class="flex items-center">
+        <img src="https://placehold.co/60x60" alt="Ícone de farmácia" class="mr-4 rounded-lg" />
+        <div>
+          <h1 class="text-3xl font-bold">FlowChat</h1>
+          <p class="text-blue-200">Assistente virtual para encontrar medicamentos</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="chat-container bg-white rounded-b-xl shadow-lg p-6">
+        <div id="chat-messages" class="mb-6 space-y-4 h-96 overflow-y-auto p-4 border-b" aria-live="polite">
+          <div class="chat-message bg-blue-50 text-blue-800 p-4 rounded-lg max-w-xs">
+            <p class="font-medium">
+              Olá! Sou o assistente virtual do FlowChat. Digite o nome do medicamento que deseja encontrar e eu vou te ajudar!
+            </p>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="flex space-x-2">
+            <input
+              type="text"
+              id="medicine-input"
+              placeholder="Digite o nome do medicamento (Ex: Paracetamol)"
+              class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              autocomplete="off"
+            />
+            <button
+              id="search-button"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300"
+            >
+              Buscar
+            </button>
+          </div>
+          <div id="autocomplete-results" class="absolute w-full bg-white rounded-b-lg shadow-md mt-1 border border-gray-200 hidden"></div>
+        </div>
+      </div>
+
+      <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"></div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      // ===== Dados =====
+      const pharmacies = [
+        { id: 1, name: "Droga Raia", logo: "https://placehold.co/100x40" },
+        { id: 2, name: "Drogasil", logo: "https://placehold.co/100x40" },
+        { id: 3, name: "Pacheco", logo: "https://placehold.co/100x40" },
+      ];
+
+      const medicines = [
+        {
+          id: 1,
+          name: "Paracetamol",
+          description: "Analgésico e antitérmico indicado para dores leves a moderadas e febre.",
+          expandedDetails:
+            "Paracetamol é um medicamento popular para alívio da dor e redução da febre. É seguro para a maioria das pessoas, mas deve ser usado com cautela em caso de problemas hepáticos. Sempre leia a bula.",
+          variants: [
+            { pharmacyId: 1, price: 8.9, quantity: "500mg 20 comprimidos", inStock: true },
+            { pharmacyId: 2, price: 9.5, quantity: "500mg 20 comprimidos", inStock: true },
+            { pharmacyId: 3, price: 7.99, quantity: "500mg 10 comprimidos", inStock: true },
+          ],
+        },
+        {
+        id: 2,
+          name: "Ibuprofeno",
+          description: "Anti-inflamatório não esteroidal para dores, inflamações e redução de febre.",
+          expandedDetails: "Ibuprofeno é um anti-inflamatório comum usado para dores e inflamações. Não é recomendado para pacientes com problemas renais ou úlceras. Consulte um médico antes de usar.",
+          variants: [
+            { pharmacyId: 1, price: 15.20, quantity: "400mg 10 comprimidos", inStock: true },
+            { pharmacyId: 2, price: 14.80, quantity: "400mg 12 comprimidos", inStock: true },
+            { pharmacyId: 3, price: 16.00, quantity: "400mg 10 comprimidos", inStock: true }
+          ]
+        },
+        {
+          id: 3,
+          name: "Omeprazol",
+          description: "Inibidor de bomba de prótons para tratamento de azia e problemas gástricos.",
+          expandedDetails: "Omeprazol é usado para tratar a azia frequente e outras condições causadas pelo excesso de ácido estomacal. Pode interagir com outros medicamentos. Siga a orientação médica.",
+          variants: [
+            { pharmacyId: 1, price: 22.90, quantity: "20mg 14 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 25.50, quantity: "20mg 14 cápsulas", inStock: false },
+            { pharmacyId: 3, price: 19.99, quantity: "20mg 10 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 4,
+          name: "Dipirona 1g",
+          description: "Analgésico e antitérmico utilizado no alívio de dores e redução de febre.",
+          expandedDetails: "Dipirona, também conhecida como metamizol, é um analgésico e antitérmico eficaz. Pode causar reações alérgicas graves em pessoas sensíveis. Use conforme a prescrição médica.",
+          variants: [
+            { pharmacyId: 1, price: 7.26, quantity: "1g 10 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 9.90, quantity: "1g 10 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 11.25, quantity: "1g 10 cápsulas", inStock: false }
+          ]
+        },
+        {
+          id: 5,
+          name: "Losartana",
+          description: "Anti-hipertensivo usado no tratamento da pressão arterial elevada e insuficiência cardíaca.",
+          expandedDetails: "Losartana é um medicamento para tratar pressão alta e insuficiência cardíaca. É um diurético que ajuda a eliminar o excesso de líquido do corpo. Não pare de usar sem orientação médica.",
+          variants: [
+            { pharmacyId: 1, price: 2.41, quantity: "50mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 5.19, quantity: "50mg 30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 8.65, quantity: "50mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 6,
+          name: "Dipirona",
+          description: "Analgésico e antitérmico eficaz no alívio de dores leves a moderadas e febre.",
+          expandedDetails: "Dipirona, também conhecida como metamizol, é um analgésico e antitérmico eficaz. Pode causar reações alérgicas graves em pessoas sensíveis. Use conforme a prescrição médica.",
+          variants: [
+            { pharmacyId: 1, price: 2.49, quantity: "500mg 10 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 5.50, quantity: "500mg 10 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 7.51, quantity: "500mg 10 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 7,
+          name: "Sinvastatina",
+          description: "Estatina redutora de colesterol, eficaz na prevenção de doenças cardiovasculares.",
+          expandedDetails: "Sinvastatina é usada para diminuir os níveis de colesterol. Deve ser tomada diariamente, conforme a orientação médica. Pode causar dores musculares em alguns pacientes.",
+          variants: [
+            { pharmacyId: 1, price: 6.30, quantity: "40mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 9.71, quantity: "40mg 30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 18.76, quantity: "40mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 8,
+          name: "Hidroclorotiazida",
+          description: "Diurético tiazídico utilizado no controle da hipertensão e redução de edemas.",
+          expandedDetails: "Hidroclorotiazida é um diurético usado para tratar a pressão alta e o acúmulo de líquidos. É importante manter a hidratação e monitorar os eletrólitos.",
+          variants: [
+            { pharmacyId: 1, price: 1.86, quantity: "25mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 2.32, quantity: "25mg 30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 3.99, quantity: "25mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 9,
+          name: "Maxalgina",
+          description: "Analgésico e antitérmico rápido, indicado para alívio de dores leves a moderadas e redução da febre.",
+          expandedDetails: "Maxalgina é um medicamento analgésico e antitérmico de ação rápida. É usado para o alívio de dores leves a moderadas e para baixar a febre.",
+          variants: [
+            { pharmacyId: 1, price: 10.38, quantity: "500mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 15.99, quantity: "500mg 30 cápsulas", inStock: false },
+            { pharmacyId: 3, price: 23.93, quantity: "500mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 10,
+          name: "Enalapril",
+          description: "Inibidor da ECA utilizado no tratamento da hipertensão arterial e insuficiência cardíaca.",
+          expandedDetails: "Enalapril é um inibidor da enzima conversora de angiotensina (ECA) usado para tratar a pressão arterial alta e a insuficiência cardíaca. Não é recomendado para mulheres grávidas.",
+          variants: [
+            { pharmacyId: 1, price: 4.17, quantity: "20mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 6.99, quantity: "20mg 30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 21.96, quantity: "20mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 11,
+          name: "Simeticona",
+          description: "Antiflatulento que atua rompendo bolhas de gás no trato digestivo, aliviando desconforto, inchaço e cólicas.",
+          expandedDetails: "Simeticona é usada para aliviar o excesso de gases no trato digestivo. Não é absorvida pelo organismo e age localmente. É um medicamento seguro, mas consulte a bula para a dose correta.",
+          variants: [
+            { pharmacyId: 1, price: 5.17, quantity: "40mg 20 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 6.30, quantity: "40mg 20 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 11.79, quantity: "40mg 20 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 12,
+          name: "Buscopan",
+          description: "Analgésico e antiespasmódico que alivia cólicas intestinais, estomacais, urinárias, biliares e menstruais.",
+          expandedDetails: "Buscopan é um analgésico e antiespasmódico para tratar dores e cólicas. Não deve ser usado por pessoas com glaucoma ou problemas de próstata. Siga a orientação médica.",
+          variants: [
+            { pharmacyId: 1, price: 23.79, quantity: "10/250mg 20 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 27.50, quantity: "10/250mg 20 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 19.30, quantity: "10/250mg 20 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 14,
+          name: "Torsilax",
+          description: "Combinação de relaxante muscular, analgésico e anti-inflamatório para alívio de dores e inflamações agudas.",
+          expandedDetails: "Torsilax é uma combinação de medicamentos para dores musculares e inflamações. Pode causar sonolência e não deve ser misturado com álcool. Use somente sob orientação médica.",
+          variants: [
+            { pharmacyId: 1, price: 4.99, quantity: "30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 11.49, quantity: "30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 19.90, quantity: "30 cápsulas", inStock: false }
+          ]
+        },
+        {
+          id: 15,
+          name: "Cimegripe",
+          description: "Medicamento para alívio de sintomas de gripes e resfriados, como dor, febre, congestão e coriza.",
+          expandedDetails: "Cimegripe é uma combinação para tratar sintomas de gripe e resfriado. Pode causar sonolência e deve ser evitado por pessoas com hipertensão. Siga as instruções da embalagem.",
+          variants: [
+            { pharmacyId: 1, price: 6.50, quantity: "10 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 9.00, quantity: "10 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 15.90, quantity: "10 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 16,
+          name: "Amoxicilina",
+          description: "Antibiótico de amplo espectro usado para tratar infecções bacterianas.",
+          expandedDetails: "Amoxicilina é um antibiótico para tratar infecções bacterianas. Deve ser usada até o fim do tratamento, mesmo se os sintomas melhorarem, para evitar resistência. Somente com receita médica.",
+          variants: [
+            { pharmacyId: 1, price: 9.90, quantity: "500mg 21 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 15.00, quantity: "500mg 21 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 22.50, quantity: "500mg 21 cápsulas", inStock: false }
+          ]
+        },
+        {
+          id: 17,
+          name: "Metformina",
+          description: "Medicamento oral para controle do diabetes tipo 2, que ajuda a reduzir a glicose no sangue.",
+          expandedDetails: "Metformina é um medicamento para diabetes tipo 2. Ajuda a controlar os níveis de glicose no sangue. Acompanhe com uma dieta saudável e exercícios. Somente com receita médica.",
+          variants: [
+            { pharmacyId: 1, price: 12.90, quantity: "500mg 60 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 15.50, quantity: "500mg 60 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 20.99, quantity: "500mg 60 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 18,
+          name: "Ranitidina",
+          description: "Antiácido utilizado para tratar úlceras gástricas e refluxo gastroesofágico.",
+          expandedDetails: "Ranitidina é um antiácido para tratar úlceras gástricas e refluxo. Use conforme a prescrição médica.",
+          variants: [
+            { pharmacyId: 1, price: 5.00, quantity: "150mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 9.00, quantity: "150mg 30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 16.00, quantity: "150mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 19,
+          name: "Cetoconazol",
+          description: "Antifúngico utilizado no tratamento de infecções fúngicas sistêmicas e superficiais.",
+          expandedDetails: "Cetoconazol é um antifúngico. Pode ter efeitos colaterais no fígado, por isso, é importante seguir a orientação médica e fazer exames de acompanhamento.",
+          variants: [
+            { pharmacyId: 1, price: 12.90, quantity: "200mg 30 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 18.50, quantity: "200mg 30 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 20.99, quantity: "200mg 30 cápsulas", inStock: true }
+          ]
+        },
+        {
+          id: 20,
+          name: "Clonazepam",
+          description: "Benzodiazepínico usado no tratamento de distúrbios de ansiedade, insônia e convulsões.",
+          expandedDetails: "Clonazepam é um medicamento controlado para ansiedade e convulsões. Causa dependência e deve ser usado com extrema cautela e sob supervisão médica. Não misture com álcool.",
+          variants: [
+            { pharmacyId: 1, price: 9.90, quantity: "2mg 20 cápsulas", inStock: true },
+            { pharmacyId: 2, price: 15.50, quantity: "2mg 20 cápsulas", inStock: true },
+            { pharmacyId: 3, price: 20.99, quantity: "2mg 20 cápsulas", inStock: true }
+          ]
+        }
+      ];
+
+      // ===== Elementos do DOM =====
+      const medicineInput = document.getElementById("medicine-input");
+      const searchButton = document.getElementById("search-button");
+      const chatMessages = document.getElementById("chat-messages");
+      const resultsContainer = document.getElementById("results-container");
+      const autocompleteResults = document.getElementById("autocomplete-results");
+
+      // ===== Funções utilitárias =====
+      function addMessage(text, isUser  = false) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `chat-message ${
+          isUser  ? "bg-gray-100 text-gray-800 ml-auto" : "bg-blue-50 text-blue-800"
+        } p-4 rounded-lg max-w-xs`;
+        const messageText = document.createElement("p");
+        messageText.className = "font-medium";
+        messageText.textContent = text;
+        messageDiv.appendChild(messageText);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function clearResults() {
+        resultsContainer.innerHTML = "";
+      }
+
+      function renderMedicineCard(med, variant) {
+        const pharmacy = pharmacies.find((p) => p.id === variant.pharmacyId);
+        const stockStatusText = variant.inStock ? "Em estoque" : "Indisponível";
+        const stockStatusColor = variant.inStock ? "bg-green-500" : "bg-red-500";
+
+        const card = document.createElement("div");
+        card.className =
+          "medicine-card bg-white p-6 rounded-xl shadow-md border border-gray-100 transition duration-300 hover:border-blue-200";
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold text-blue-800">${med.name}</h3>
+            <img src="${pharmacy.logo}" alt="${pharmacy.name}" class="h-6" />
+          </div>
+          <p class="text-gray-600 mb-4">${med.description}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500">${variant.quantity}</span>
+            <span class="text-2xl font-bold text-blue-600">R$ ${variant.price
+              .toFixed(2)
+              .replace(".", ",")}</span>
+          </div>
+          <div class="mt-4 text-sm text-gray-500 flex items-center">
+            <span class="inline-block w-3 h-3 rounded-full ${stockStatusColor} mr-2"></span>
+            ${stockStatusText} na ${pharmacy.name}
+          </div>
+          <div class="mt-4 flex justify-end">
+            <button class="details-toggle text-blue-600 hover:text-blue-800 transition duration-300 font-medium">Mais detalhes</button>
+          </div>
+          <div class="details-panel hidden mt-4 p-4 border rounded-lg bg-gray-50">
+            <p class="text-sm text-gray-700">${med.expandedDetails}</p>
+          </div>
+        `;
+
+        return card;
+      }
+
+      function searchMedicine() {
+        const term = medicineInput.value.trim().toLowerCase();
+        if (!term) {
+          addMessage("Por favor, digite o nome de um medicamento para eu buscar.");
+          return;
+        }
+        autocompleteResults.classList.add("hidden");
+        addMessage(term, true);
+        medicineInput.value = "";
+
+        const found = medicines.filter((m) => m.name.toLowerCase().includes(term));
+        if (found.length === 0) {
+          addMessage(`Não encontrei o medicamento "${term}". Verifique a escrita e tente novamente.`);
+          return;
+        }
+
+        clearResults();
+        addMessage(`Encontrei ${found.length} resultado(s) para "${term}":`);
+
+        found.forEach((med) => {
+          med.variants.forEach((variant) => {
+            const card = renderMedicineCard(med, variant);
+            resultsContainer.appendChild(card);
+          });
+        });
+      }
+
+      function showSuggestions() {
+        const term = medicineInput.value.trim().toLowerCase();
+        autocompleteResults.innerHTML = "";
+
+        if (term.length > 1) {
+          const uniqueSuggestions = [
+            ...new Set(
+              medicines.filter((m) => m.name.toLowerCase().startsWith(term)).map((m) => m.name)
+            ),
+          ];
+          uniqueSuggestions.forEach((suggestion) => {
+            const div = document.createElement("div");
+            div.textContent = suggestion;
+            div.className = "autocomplete-item";
+            autocompleteResults.appendChild(div);
+          });
+          autocompleteResults.classList.remove("hidden");
+        } else {
+          autocompleteResults.classList.add("hidden");
+        }
+      }
+
+      function onDetailsToggleClick(event) {
+        const btn = event.target.closest(".details-toggle");
+        if (!btn) return;
+        const card = btn.closest(".medicine-card");
+        if (!card) return;
+        const panel = card.querySelector(".details-panel");
+        const isHidden = panel.classList.contains("hidden");
+        panel.classList.toggle("hidden");
+        btn.textContent = isHidden ? "Menos detalhes" : "Mais detalhes";
+      }
+
+      function onSuggestionClick(event) {
+        const item = event.target.closest(".autocomplete-item");
+        if (!item) return;
+        medicineInput.value = item.textContent;
+        autocompleteResults.classList.add("hidden");
+        searchMedicine();
+      }
+
+      function setupListeners() {
+        searchButton.addEventListener("click", searchMedicine);
+        medicineInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            searchMedicine();
+          }
+        });
+        medicineInput.addEventListener("input", showSuggestions);
+
+        resultsContainer.addEventListener("click", onDetailsToggleClick);
+        autocompleteResults.addEventListener("click", onSuggestionClick);
+
+        document.addEventListener("click", function (e) {
+          const rel = e.target.closest(".relative");
+          if (!rel) {
+            autocompleteResults.classList.add("hidden");
+          }
+        });
+      }
+
+      function init() {
+        setupListeners();
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
