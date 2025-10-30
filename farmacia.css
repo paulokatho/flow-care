@@ -1,0 +1,75 @@
+.chat-container {
+    transition: all 0.3s ease;
+  }
+  
+  .chat-message {
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .medicine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  #autocomplete-results {
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+  }
+  
+  #autocomplete-results div {
+    cursor: pointer;
+    padding: 8px 12px;
+  }
+  
+  #autocomplete-results div:hover {
+    background-color: #d1f0d9; /* tom mais claro do verde */
+  }
+  
+  /* Substituindo as cores azuis por #8fe3a6 */
+  .bg-blue-600 {
+    background-color: #8fe3a6 !important;
+  }
+  
+  .bg-blue-50 {
+    background-color: #e6f7e9 !important; /* verde muito claro */
+  }
+  
+  .text-blue-800 {
+    color: #2f6f3f !important; /* verde escuro */
+  }
+  
+  .text-blue-600 {
+    color: #4caf50 !important; /* verde médio */
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #7bd295 !important; /* verde um pouco mais escuro */
+  }
+  
+  .focus\:ring-blue-500:focus {
+    --tw-ring-color: #8fe3a6 !important;
+  }
+  
+  .focus\:border-blue-500:focus {
+    border-color: #8fe3a6 !important;
+  }
+  
+  .hover\:text-blue-800:hover {
+    color: #2f6f3f !important;
+  }
+  
+  .hover\:border-blue-200:hover {
+    border-color: #b7e6b9 !important;
+  }
